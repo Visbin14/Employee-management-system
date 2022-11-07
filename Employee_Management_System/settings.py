@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'Employee_Management_System.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
+        'NAME': 'pmtool',
         'USER': 'postgres',
         'PASSWORD': 'root',
         'HOST': '127.0.0.1',

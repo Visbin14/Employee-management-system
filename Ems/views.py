@@ -21,9 +21,21 @@ def home(request):
                 time=time [2:10]
                 contact = sk.contacts[b]
                 name = contact.name
-                print("break:",name,date,time)
+                # print("break:",name,date,time)
+                obj = Employee.objects.get(name = name)
                 
+                if i.content.lower() == "break":
+                    log = Log_status.objects.create(Emp = obj, Log = "break", Time=time)
+                    log.save()
+                    logged_time = Logged_Time.objects.create(Employee=obj, Date=date[0])
+                    logged_time.Log.add(log)  
                
+
+              
+                
+
+
+             
             
             # lis = []
             if i.content.lower().replace(" ","") == "goodmorning":
@@ -35,10 +47,18 @@ def home(request):
                 time=time [2:10]
                 contact = sk.contacts[b]
                 name = contact.name
-                print("login:",name,date,time)
+                
+                obj1 = Employee.objects.get(name = name)
+                
+                if i.content.lower().replace(" ","") == "goodmorning":
+                    log = Log_status.objects.create(Emp = obj1, Log = "login", Time=time)
+                    log.save()
+                    
+                    logged_time = Logged_Time.objects.create(Employee=obj1, Date=date[0])
+                    logged_time.Log.add(log)
+                # print("login:",name,date,time)
                 
             
-            # lis = []
             if i.content.lower().replace(" ","") == "backtowork":
                 # print("\n","back to work : ", i)
                 a = str(i)
@@ -48,8 +68,15 @@ def home(request):
                 time=time [2:10]
                 contact = sk.contacts[b]
                 name = contact.name
+                obj2 = Employee.objects.get(name = name)
                 
-                print("back to work:",name,date,time)
+                if i.content.lower().replace(" ","") == "backtowork":
+                    log = Log_status.objects.create(Emp = obj2, Log = "back to work", Time=time)
+                    log.save()
+                    logged_time = Logged_Time.objects.create(Employee=obj2, Date=date[0])
+                    logged_time.Log.add(log)
+                
+                # print("back to work:",name,date,time)
                 
                
             
@@ -63,8 +90,15 @@ def home(request):
                 time= str(a.split("Time")[1].split()[2:3])
                 time=time [2:10]
                 contact = sk.contacts[b]
-                name = str(contact.name)
-                print("logout:",name,date,time)
+                name = contact.name
+                obj3 = Employee.objects.get(name = name)
+                
+                if "what did you do today" in i.content.lower():
+                    log = Log_status.objects.create(Emp = obj3, Log = "logout", Time=time)
+                    log.save()
+                    logged_time = Logged_Time.objects.create(Employee=obj3, Date=date[0])
+                    logged_time.Log.add(log)
+                # print("logout:",name,date,time)
                 
                         
                
