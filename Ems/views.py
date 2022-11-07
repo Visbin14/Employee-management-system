@@ -129,6 +129,18 @@ def home(request):
 
 
     #     print(name,date,time)
+def login(request):
+    return render(request, 'log/login.html')
+
+def index(request):
+    return render(request, 'log/index.html')
+
+def employee(request):
+    return render(request, 'log/index2.html')
+
+def add(request):
+    return render(request, 'log/add2.html')
+
 
 
 
