@@ -1,0 +1,154 @@
+.sidenav{
+width: 92px;
+    height: 100%;
+    float: left;
+    position: absolute;
+    background-color: #2b3d34;
+
+
+
+}
+button { text-align: center;
+}
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #717396;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #abc8eb;
+}
+
+
+/ Style the buttons /
+.btn {
+  background-color: #f1f1f1;
+  cursor: pointer;
+
+}
+
+/ Style the active class, and buttons on mouse-over /
+.active, .btn:hover {
+  background-color: #7FB3D5;
+  color: white;
+}
+
+.hello{
+    background: black;
+
+
+}
+.navbar-brand{
+   color: black;
+   font-family: system-ui;
+    position: absolute;
+    left: 26px;
+    top: 13px;
+
+}
+.display-4{
+   background: #abc8eb;
+   border-radius: 15px;
+    font-size: 37px;
+    margin-bottom:35px;
+    padding-left:25px;
+    padding-top:15px;
+    padding-bottom:15px;
+    font-size:25px !important;
+    font-weight:400;
+    color:#21272e;
+}
+.btn active{
+       background: gray;
+}
+.{
+   background: #DFDCDC;
+}
+.myDIV{
+  background: #DFDCDC;
+}
+.navbar navbar-expand-lg{
+    background: #DFDCDC;
+}
+
+.side{
+     color: black;
+}
+.color{
+
+     color:white;
+     height:50px;
+
+}
+.name{
+    border: 1px solid #717396;
+    font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 50%;
+  border: 1px solid black;
+  margin-left: auto;
+margin-right: auto;
+border-collapse: collapse;
+width: 500px;
+text-align: center;
+font-size: 60px;
+background-color: #abc8eb;
+}
+
+.thead{
+ color:#dedede !important;
+}
+
+.click {
+  transition-duration: 0.4s;
+}
+
+.click:hover {
+  background-color: #4CAF50;
+  color: white;
+  font-weight:500;
+font-size:16px;
+padding-top:8px;
+padding-bottom:8px;
+padding-left:8px;
+padding-right:8px;
+position: absolute;
+left: 1100px;
+margin-top:25px;
+border-radius: 8px;
+color:#ffffff;
+background-color:#008CBA;
+}
+.login{
+    background-color:#008CBA;
+    color:blue;
+}
+ .container {
+    margin-top:50px;
+    padding: 50px;
+  background-color: #84809e;
+}
+body{
+  font-family: Calibri, Helvetica, sans-serif;
+  background-color: #060129;
+
+  }
+  input[type=text], input[type=password], input[type=email],textarea {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+ div {
+            padding: 10px 0;
+         }
+
