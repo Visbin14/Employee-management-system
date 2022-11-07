@@ -10,7 +10,7 @@
     .container {
     margin-top:50px;
     padding: 50px;
-  background-color: #84809e;
+  background-color: #e1e7f5;
 }
 body{
   font-family: Calibri, Helvetica, sans-serif;
@@ -23,26 +23,25 @@ body{
   margin: 5px 0 22px 0;
   display: inline-block;
   border: none;
-  background: #f1f1f1;
+  background: #e1e7f5;
 }
  div {
             padding: 10px 0;
          }
 </style>
 <body>
-<form class="login" method="POST" action="{% url 'employee' %}">
+<form class="login" method="POST" action="{% url 'add' %}">
      {% csrf_token %}
   <div class="container">
   <center><h1> Employee Details Form</h1> </center>
   <hr>
       <label>ID</label>
-<input type="text" name="ID" placeholder= "ID" size="15" required />
+<input type="text" name="id" placeholder= "IDddd" size="15" required />
 <label> Name: </label>
-<input type="text" name="Name" placeholder="Enter your name" size="15" required />
+<input type="text" name="name" placeholder="Enter your name" size="15" required />
 <label> Email-id: </label>
 <input type="email" name="email" placeholder="Enter your email-id" size="15"required />
-      <button type="submit" style="width: 85px;margin: auto;background-color:#0b0530;" class="btn btn-primary">Submit</button>
-
+      <button>submit</button>
   </div>
 </form>
 </body>
