@@ -10,7 +10,7 @@
     .container {
     margin-top:50px;
     padding: 50px;
-  background-color: #84809e;
+  background-color: #e1e7f5;
 }
 body{
   font-family: Calibri, Helvetica, sans-serif;
@@ -18,7 +18,7 @@ body{
 
   }
   input[type=text], input[type=password], input[type=email],textarea {
-  width: 100%;
+   width: 100%;
   padding: 15px;
   margin: 5px 0 22px 0;
   display: inline-block;
@@ -28,21 +28,59 @@ body{
  div {
             padding: 10px 0;
          }
+ .login{
+    margin-top: -52px;
+    }
 </style>
 <body>
-<form class="login" method="POST" action="{% url 'employee' %}">
+<nav style="background-color:  #abc8eb;
+    height: 63px;">
+  <a class="navbar-brand" href="#" style="font-family: system-ui;">EMS</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarText">
+    <span class="navbar-text" style="position: absolute;left: 1259px;">
+      <a style="text-decoration: none;" href=""></a>
+    </span>
+  </div>
+</nav>
+<div class="container-fluid">
+  <div class="row" style="min-height: 700px;">
+    <div class="col-sm-1" style="background-color: #c5d6eb;">
+
+<br>
+        <div id="myDIV">
+
+  <a class="btn active" style="color: black;text-decoration: dashed;font-family: auto;padding: 7px;" href="{% url 'index' %}" >Dashboard</a><br>
+        <hr>
+  <a class="btn " style="color: black;text-decoration: dashed;font-family: auto;padding-top: inherit;" href="{% url 'employee' %}">Employee</a>
+
+<hr>
+        </div>
+
+    </div>
+      <div class="col-sm-11">
+
+         <div class="p-5 bottom-radious bg-light shadow-lg" style="min-height:600px;">
+
+              <p class="lead"></p>
+              <hr class="my-2">
+
+
+
+<form class="login" method="POST" action="{% url 'add' %}">
      {% csrf_token %}
   <div class="container">
   <center><h1> Employee Details Form</h1> </center>
   <hr>
       <label>ID</label>
-<input type="text" name="ID" placeholder= "ID" size="15" required />
+<input type="text" name="id" placeholder= "ID" size="15" required />
 <label> Name: </label>
-<input type="text" name="Name" placeholder="Enter your name" size="15" required />
+<input type="text" name="name" placeholder="Enter your name" size="15" required />
 <label> Email-id: </label>
 <input type="email" name="email" placeholder="Enter your email-id" size="15"required />
-      <button type="submit" style="width: 85px;margin: auto;background-color:#0b0530;" class="btn btn-primary">Submit</button>
-
+      <button>submit</button>
   </div>
 </form>
 </body>

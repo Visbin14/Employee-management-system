@@ -1,16 +1,21 @@
 from django.shortcuts import render
+
+from Employee_Management_System import settings
 from scrape import break_login_logout
 from Ems.models import *
 from skpy import *
+from django.contrib.auth.forms import AuthenticationForm
+from django.shortcuts import render, redirect
+from django.views import generic, View
 
-sk = Skype("visbinrojer@codesvera.com", "v@visbin@code@pass")
+sk = Skype(settings.SKYPE_EMAIL, settings.SKYPE_PASS)
 
 def home(request):
 
     log_time = break_login_logout()
     def log():
         for i in log_time:
-            
+
             # lis = []
             if i.content.lower() == "break":
                 # print("\n","break : ",i)
@@ -22,9 +27,9 @@ def home(request):
                 contact = sk.contacts[b]
                 name = contact.name
                 print("break:",name,date,time)
-                
-               
-            
+
+
+
             # lis = []
             if i.content.lower().replace(" ","") == "goodmorning":
                 # print("\n","login : ",i)
@@ -36,8 +41,8 @@ def home(request):
                 contact = sk.contacts[b]
                 name = contact.name
                 print("login:",name,date,time)
-                
-            
+
+
             # lis = []
             if i.content.lower().replace(" ","") == "backtowork":
                 # print("\n","back to work : ", i)
@@ -48,12 +53,12 @@ def home(request):
                 time=time [2:10]
                 contact = sk.contacts[b]
                 name = contact.name
-                
+
                 print("back to work:",name,date,time)
-                
-               
-            
-            
+
+
+
+
             # lis = []
             if "what did you do today" in i.content.lower():
                 # print("\n","logout : ",i)
@@ -65,16 +70,16 @@ def home(request):
                 contact = sk.contacts[b]
                 name = str(contact.name)
                 print("logout:",name,date,time)
-                
-                        
-               
-       
-    
+
+
+
+
+
     log()
 
-         
-    
-      
+
+
+
     return render(request,"home.html")
 
 
@@ -136,10 +141,20 @@ def index(request):
     return render(request, 'log/index.html')
 
 def employee(request):
-    return render(request, 'log/index2.html')
+    a=Employee.objects.all()
+    return render(request, 'log/index2.html',{'a':a})
 
-def add(request):
-    return render(request, 'log/add2.html')
+class add(View):
+    def get(self, request):
+        return render(request, 'log/add2.html')
+    def post(self, request):
+        id = request.POST.get('id')
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        employee = Employee.objects.create(employee_id=id,name=name,email=email)
+        employee.save()
+        return redirect('/employee/')
+
 
 
 
