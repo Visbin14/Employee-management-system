@@ -125,7 +125,7 @@ def delete(request,id):
    b= Employee.objects.get(id=id)
    b.delete()
    return redirect('/employee/')
-    # return HttpResponse("hii")
+
 
 class add(View):
     def get(self, request):
