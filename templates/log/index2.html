@@ -74,7 +74,7 @@
       <th scope="row">{{ i.employee_id }}</th>
       <td>{{ i.name}}</td>
       <td>{{ i.email }}</td>
-        <td> <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a></td>
+        <td> <a name="delete-id" href="{% url 'delete' i.id %}" class="delete" title="Delete" data-toggle="tooltip" ><i class="material-icons">&#xE872;</i></a></td>
 
     </tr>
   {% endfor %}
