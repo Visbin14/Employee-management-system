@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 import os
-
+import environ
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -27,7 +27,8 @@ SECRET_KEY = 'django-insecure-8c6#+q@%q(y1hbg=il*a##c#*^%4gyv!6mc6c4992ciq4l@vrt
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+env = environ.Env()
+environ.Env.read_env()
 
 # Application definition
 
@@ -78,9 +79,9 @@ WSGI_APPLICATION = 'Employee_Management_System.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'emd_db',
-        'USER': 'userpostgres',
-        'PASSWORD': 'password',
+        'NAME': env("DB_NAME"),
+        'USER': env("DB_USER"),
+        'PASSWORD':  env("DB_PASS"),
         'HOST': 'localhost',
         'PORT': '5432',
     }
@@ -136,3 +137,6 @@ MEDIA_ROOT=os.path.join(BASE_DIR,'media')
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SKYPE_EMAIL = env("SK_EMAIL")
+SKYPE_PASS = env("SK_PASS")

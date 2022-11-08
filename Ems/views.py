@@ -1,4 +1,6 @@
 from django.shortcuts import render
+
+from Employee_Management_System import settings
 from scrape import break_login_logout
 from Ems.models import *
 from skpy import *
@@ -6,7 +8,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
 from django.views import generic, View
 
-sk = Skype("visbinrojer@codesvera.com", "v@visbin@code@pass")
+sk = Skype(settings.SKYPE_EMAIL, settings.SKYPE_PASS)
 
 def home(request):
 
@@ -139,7 +141,8 @@ def index(request):
     return render(request, 'log/index.html')
 
 def employee(request):
-    return render(request, 'log/index2.html')
+    a=Employee.objects.all()
+    return render(request, 'log/index2.html',{'a':a})
 
 class add(View):
     def get(self, request):
