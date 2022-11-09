@@ -104,11 +104,15 @@ class Login(View):
         password = request.POST.get('password')
         try:
             user = User.objects.get(username=username)
-            if user.check_password(password):
+            status=user.check_password(password)
+            if status:
 
                   return redirect('/index/')
+            else:
+
+                return render(request, 'log/login.html', {'message': "Password  incorrect"})
         except:
-            message="Please check username and password"
+            message="Please check username"
             return render(request, 'log/login.html',{'message':message})
 
 
