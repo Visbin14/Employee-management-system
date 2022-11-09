@@ -140,3 +140,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SKYPE_EMAIL = env("SK_EMAIL")
 SKYPE_PASS = env("SK_PASS")
+
+LOGIN_URL = '/login/'
