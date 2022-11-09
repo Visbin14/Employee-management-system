@@ -22,7 +22,7 @@
     </script>
 </head>
 <body>
-<nav style="background-color:#eaedf1;
+<nav style="background-color:#9cb7db;
     height: 63px;">
   <a class="navbar-brand" href="#" style="font-family: system-ui;">EMS</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -55,11 +55,10 @@
               <h1 class="display-4">Employee Details</h1>
               <p class="lead"></p>
 <!--              <hr class="my-2">-->
-<div class="name">
+<div class="name"style="width: 618px;">
 <!--<table class="table table-striped table-dark" style="border: 1px solid #DFDCDC;border-collapse: collapse;">-->
 <table>
   <thead>
-    <div class="thead"></div>
     <tr>
       <th scope="col" style="color:#21272e">ID</th>
       <th scope="col">NAME</th>
@@ -74,31 +73,17 @@
       <th scope="row">{{ i.employee_id }}</th>
       <td>{{ i.name}}</td>
       <td>{{ i.email }}</td>
-        <td> <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a></td>
-
+        <td> <a name="delete-id" href="{% url 'delete' i.id %}" class="delete" title="Delete" data-toggle="tooltip" ><i class="material-icons">&#xE872;</i></a></td>
     </tr>
   {% endfor %}
   </tbody>
 </table>
-
-    </div>
-                 <button class ="click"type="button" style="color:#ffffff;background-color:#008CBA;
-
-
-padding-right:8px; position: absolute;left: 1100px; margin-top:25px;border-radius: 8px;
-}"> Add Employee </button>
-
+         </div>
           <a href="{% url 'add' %}">
-                   <button class ="click"type="button" style="color:#ffffff;background-color:#008CBA;
-
-
-padding-right:8px; position: absolute;left: 1100px; margin-top:25px;border-radius: 8px;
-}"> Add Employee </button>
-
-
-
-                </div>
+              <button class ="click"type="button" style="color:#ffffff;background-color:#008CBA;
+padding-right:8px; position: absolute;left: 851px; margin-top:25px;border-radius: 8px;"> Add Employee </button>
       </div>
+  </div>
 
 
     </div>

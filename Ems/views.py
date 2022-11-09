@@ -4,9 +4,14 @@ from Employee_Management_System import settings
 from scrape import break_login_logout
 from Ems.models import *
 from skpy import *
+
 from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
 from django.views import generic, View
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import login_required
 
 sk = Skype(settings.SKYPE_EMAIL, settings.SKYPE_PASS)
 
@@ -90,59 +95,42 @@ def home(request):
 
 
 
-    # # login
-    
-    # Login= login()
-    # for i in Login:
-      
-    #     a= str(i)
-    #     b= a.split("UserId")[1].strip()[1:].strip().split("ChatId:")[0].strip()
+class Login(View):
+    def get(self, request):
+        return render(request, 'log/login.html')
 
-       
+    def post(self, request):
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        try:
+            user = User.objects.get(username=username)
+            status=user.check_password(password)
+            if status:
 
-    #     date = a.split("Time")[1].split()[1:2]
+                  return redirect('/index/')
+            else:
 
-    #     time= str(a.split("Time")[1].split()[2:3])
-    #     time=time [2:10]
-        
-    #     contact = sk.contacts[b]
-
-       
-        
-    #     name = contact.name
-
-    #     print(name, date, time)
-        
-    #     # break
-       
- 
-    # print("-----------------")
-
-    # # logout
-
-    # Logout = logout()
-    # for i in Logout:
-    #     a = str(i)
-    #     b= a.split("UserId")[1].strip()[1:].strip().split("ChatId:")[0].strip()
-    #     date = a.split("Time")[1].split()[1:2]
-
-    #     time= str(a.split("Time")[1].split()[2:3])
-    #     time=time [2:10]
-        
-    #     contact = sk.contacts[b]
-    #     name = contact.name
+                return render(request, 'log/login.html', {'message': "Password  incorrect"})
+        except:
+            message="Please check username"
+            return render(request, 'log/login.html',{'message':message})
 
 
-    #     print(name,date,time)
-def login(request):
-    return render(request, 'log/login.html')
+
 
 def index(request):
-    return render(request, 'log/index.html')
+    a = Employee.objects.all()
+    return render(request, 'log/index.html',{'a':a})
 
 def employee(request):
     a=Employee.objects.all()
     return render(request, 'log/index2.html',{'a':a})
+
+def delete(request,id):
+   b= Employee.objects.get(id=id)
+   b.delete()
+   return redirect('/employee/')
+
 
 class add(View):
     def get(self, request):
