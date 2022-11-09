@@ -105,11 +105,11 @@ class Login(View):
         try:
             user = User.objects.get(username=username)
             if user.check_password(password):
-               if user.is_superuser:
+
                   return redirect('/index/')
         except:
-
-            return redirect('/login/')
+            message="Please check username and password"
+            return render(request, 'log/login.html',{'message':message})
 
 
 
