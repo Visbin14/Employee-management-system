@@ -22,7 +22,7 @@ td, th {
   padding: 8px;
 }
 
-tr:nth-child(even) {
+tr:nth-child() {
   background-color: #abc8eb;
 }
 
@@ -54,7 +54,7 @@ tr:nth-child(even) {
 
 }
 .display-4{
-   background: #abc8eb;
+   background:#e9e9f1;
    border-radius: 15px;
     font-size: 37px;
     margin-bottom:35px;
@@ -99,7 +99,7 @@ border-collapse: collapse;
 width: 500px;
 text-align: center;
 font-size: 60px;
-background-color: #abc8eb;
+    background-color: #e6eaef;
 }
 
 .thead{

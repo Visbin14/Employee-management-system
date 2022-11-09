@@ -30,148 +30,40 @@
   <a class="btn active" style="color: black;text-decoration: dashed;font-family: auto;padding: 7px;" href="{% url 'index' %}" >Dashboard</a><br>
         <hr>
   <a class="btn " style="color: black;text-decoration: dashed;font-family: auto;padding-top: inherit;" href="{% url 'employee' %}">Employee</a>
-
-<hr>
+            <hr>
         </div>
-
     </div>
       <div class="col-sm-11">
 
          <div class="p-5 bottom-radious bg-light shadow-lg" style="min-height:600px;">
               <h1 class="display-4">Employee Management System</h1>
               <p class="lead"></p>
-              <hr class="my-2">
 
 
-<div class="button">
+
+<div class="button"style="background: #e6eaef;">
 <table>
   <tr>
     <th>Name</th>
     <th>Total Working hr/day</th>
 
   </tr>
+     {% for i in a %}
   <tr>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td></td>
+    <td>{{ i.name}}</td>
     <td></td>
   </tr>
-  <tr>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
-    <td></td>
-    <td></td>
-  </tr>
-    <tr>
-    <td></td>
-    <td></td>
-  </tr>
-    <tr>
-    <td></td>
-    <td></td>
-  </tr>
-    <tr>
-    <td></td>
-    <td></td>
-  </tr>
-    <tr>
-    <td></td>
-    <td></td>
-  </tr>
-    <tr>
-    <td></td>
-    <td></td>
-  </tr>
-    <tr>
-    <td></td>
-    <td></td>
-  </tr>
-    <tr>
-    <td></td>
-    <td></td>
-  </tr>
-    <tr>
-    <td></td>
-    <td></td>
-  </tr>
-   <tr>
-    <td></td>
-    <td></td>
-  </tr>
-   <tr>
-    <td></td>
-    <td></td>
-  </tr>
-   <tr>
-    <td></td>
-    <td></td>
-  </tr>
-   <tr>
-    <td></td>
-    <td></td>
-  </tr>
-   <tr>
-    <td></td>
-    <td></td>
-  </tr>
-   <tr>
-    <td></td>
-    <td></td>
-  </tr>
-   <tr>
-    <td></td>
-    <td></td>
-  </tr>
-    <tr>
-    <td></td>
-    <td></td>
-  </tr>
+    {% endfor %}
 </table>
     </div>
-
-
-
-
-
-                </div>
-
-    </div>
-
-
-
-
-
-
+         </div>
+      </div>
   </div>
 </div>
-
-
-
 <footer class="bg-light text-center text-sm-start">
   <!-- Copyright -->
     <p class="text-dark" style="text-align: center;"></p>
   <!-- Copyright -->
 </footer>
-
-
-
-
-
-
-</body>
-<script>
-
-</script>
+     </body>
 </html>

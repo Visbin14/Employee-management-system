@@ -115,7 +115,8 @@ class Login(View):
 
 
 def index(request):
-    return render(request, 'log/index.html')
+    a = Employee.objects.all()
+    return render(request, 'log/index.html',{'a':a})
 
 def employee(request):
     a=Employee.objects.all()
