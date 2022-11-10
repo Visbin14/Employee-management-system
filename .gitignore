@@ -1,6 +1,6 @@
 .env
-/migrations/
-/__pycache__/
-*.pyc
-__pycache__/
+*/migrations/*
+*/__pycache__/*
+**/*.pyc
+__pycache__/*
 *.py[cod]
