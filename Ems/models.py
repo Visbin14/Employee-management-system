@@ -3,7 +3,7 @@ from django.db import models
 
 
 class Employee(models.Model):
-    employee_id = models.IntegerField()
+    employee_id = models.CharField(max_length=20)
     name = models.CharField(max_length=100)
     email = models.EmailField( max_length=254,unique=True)
 
@@ -25,14 +25,14 @@ class Log_status(models.Model):
         ("back to work","back to work")
     )
     
-    Emp = models.ForeignKey(Employee, on_delete=models.CASCADE)
+    Emp = models.ForeignKey(Employee, on_delete=models.CASCADE, blank=True, null=True)
     Log = models.CharField(max_length=30,choices=log_choices)
     Time = models.TimeField()
 
 
 
     def __str__(self):
-        return self.Log
+        return f"{self.Log}-{self.Emp}"
 
 
 

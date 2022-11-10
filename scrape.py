@@ -1,12 +1,12 @@
 from skpy import *
 
-
+from django.conf import settings
 
 import os, django
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Employee_Management_System.settings")
 django.setup()
 #login
-sk = Skype("visbinrojer@codesvera.com", "v@visbin@code@pass")
+sk = Skype(settings.SKYPE_EMAIL, settings.SKYPE_PASS)
 
 
 def break_login_logout():
