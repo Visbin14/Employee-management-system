@@ -40,7 +40,7 @@
               <p class="lead"></p>
 
 
-
+<div>{{Emp_work_hours}}</div>
 <div class="button"style="background: #e6eaef;">
 <table>
   <tr>
@@ -48,12 +48,14 @@
     <th>Total Working hr/day</th>
 
   </tr>
-     {% for i in employee %}
+    {% for k,v in data %}
+
   <tr>
-    <td>{{ i.name}}</td>
-    <td></td>
+    <td>{{ k }}</td>
+    <td>{{ v }}</td>
   </tr>
     {% endfor %}
+
 </table>
     </div>
          </div>

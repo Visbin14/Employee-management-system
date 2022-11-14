@@ -48,4 +48,4 @@ class Logged_Time(models.Model):
     Log = models.ManyToManyField(Log_status,related_name='login_status')
 
     def __str__(self):
-        return str(self.Date) if self.Date else ''
+        return f"{str(self.Date) if self.Date else ''}-{self.Employee.name}"
