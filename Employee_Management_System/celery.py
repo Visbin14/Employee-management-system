@@ -29,6 +29,7 @@ def debug_task(self):
 
 @app.task()
 def log_task():
+
     sk = Skype(settings.SKYPE_EMAIL, settings.SKYPE_PASS)
     print("celery function")
     log_time = break_login_logout()

@@ -13,7 +13,7 @@ from django.views import generic, View
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import login_required
-
+import numpy as np
 from datetime import datetime
 
 sk = Skype(settings.SKYPE_EMAIL, settings.SKYPE_PASS)
@@ -25,11 +25,9 @@ def home(request):
     def log():
         for i in log_time:
             if i.content.lower() == logged.get('Break'):
-                print(i,"////////////////////")
-                print("entering to break")
                 a = str(i)
                 b = a.split("UserId")[1].strip()[1:].strip().split("ChatId:")[0].strip()
-                print(b,"-------------------------")
+
                 date = a.split("Time")[1].split()[1:2]
                 time = str(a.split("Time")[1].split()[2:3])
                 time = time[2:10]
@@ -44,7 +42,7 @@ def home(request):
                     logged_time.Log.add(log)
 
             if i.content.lower().replace(" ", "") == logged.get('Login'):
-                print("entering to Login")
+
                 a = str(i)
                 b = a.split("UserId")[1].strip()[1:].strip().split("ChatId:")[0].strip()
                 date = a.split("Time")[1].split()[1:2]
@@ -55,13 +53,13 @@ def home(request):
                 obj1 = Employee.objects.get(name=name)
 
                 log,status = Log_status.objects.get_or_create(Emp=obj1, Log="login", Time=time)
-                # log.save()
+
                 if status:
                     logged_time = Logged_Time.objects.create(Employee=obj1, Date=date[0])
                     logged_time.Log.add(log)
 
             if i.content.lower().replace(" ", "") == logged.get('Back_to_work'):
-                print("entering to back to work")
+
                 a = str(i)
                 b = a.split("UserId")[1].strip()[1:].strip().split("ChatId:")[0].strip()
                 date = a.split("Time")[1].split()[1:2]
@@ -78,17 +76,17 @@ def home(request):
                     logged_time.Log.add(log)
 
             if logged.get('Logout') in i.content.lower():
-                print("entering to Loginout")
+
                 a = str(i)
                 b = a.split("UserId")[1].strip()[1:].strip().split("ChatId:")[0].strip()
                 date = a.split("Time")[1].split()[1:2]
-                print(date,"//////////")
+
                 time = str(a.split("Time")[1].split()[2:3])
                 time = time[2:10]
                 contact = sk.contacts[b]
                 name = contact.name
                 obj3 = Employee.objects.get(name=name)
-                print(obj3.name,"////")
+
                 log,status = Log_status.objects.get_or_create(Emp=obj3, Log="logout", Time=time)
                 # log.save()
                 if status:
@@ -122,85 +120,138 @@ class Login(View):
 
 
 def index(request):
-    employess = Employee.objects.all()
-    # time=Logged_Time.objects.all()
-    # from datetime import datetime
-    # from datetime import date, timedelta
-    #
-    # today = date.today()
-    # yesterday = today - timedelta(days=1)
-    # print("yesterday",yesterday)
-    # logged_list = []
-    # d = {}
-    # for employeee in employess:
-    #     logged_time_list = Logged_Time.objects.filter(Employee=employeee,Date=yesterday)
-    #     for logged_time in logged_time_list:
-    #         if logged_time.Employee.name not in d:
-    #             d[logged_time.Employee.name] = logged_time_list
-    #             logged_list.append(d)
-    #
-    #         else:
-    #             continue
 
     Emp_work_hours={}
-    # print(">>>>>>>",logged_list)
+
     emp_obj= Employee.objects.all()
     li= []
+    b1=[]
     for i in emp_obj:
         li.append(i.name)
     for names in li:
         print(names)
         b= names
         import datetime
-        x = datetime.datetime(2022, 11, 10)
-        # a=Log_status.objects.filter(Log="login",Emp__name=b),
-        # print(a,"<////////////////////////////////")
-
+        x = datetime.datetime(2022, 11, 9)
         login_obj=Logged_Time.objects.filter(Employee__name=b,Date=x)
         login_time= None
         logout_time= None
         logout_break_time = None
         logout_back_to_work = None
+        br = []
+        bk = []
+
+
+
         for i in login_obj:
 
 
             for j in i.Log.all():
-                print("Date:", i.id)
-                print(i.Date,j.Log,j.Time,"[][][][")
+                print(j,"<<<<<<<<<<<<<<<<<<",j.Time,i.Date)
+
                 if j.Log == "login":
                     login_time = j.Time
                 if j.Log == "logout":
                     logout_time = j.Time
+
                 if j.Log == "break":
-                    logout_break_time = j.Time
-                if j.Log == "back to work":
-                    logout_back_to_work = j.Time
-        print("login_time",login_time)
-        print("logout_time", logout_time)
-        print("logout_break_time", logout_break_time)
-        print("logout_back_to_work", logout_back_to_work)
+                    # br.append(j.Log)
+                    br.append(j.Time)
+
+                if j.Log=="back to work":
+                    # bk.append(j.Log)
+                    bk.append(j.Time)
+
+
+        br_new = sorted(br)
+        bk_new = sorted(bk)
+        print("br",br)
+        print("bk", bk)
+        print(br_new,">>>>>>>>>>>>>>")
+        print(bk_new,">>>>>>>>>>>?????")
+
+        for br in br_new:
+            print(">>>>>>>>>",br)
+            total_break=0
+            br_string = br .strftime("%H:%M:%S")
+            print(br_string,"cccccc")
+            bt_index=br_new.index(br)
+            try:
+                bk_string=bk_new[bt_index].strftime("%H:%M:%S")
+                print("br_string",br_string,"bk_string",bk_string)
+                b1 = datetime.datetime.strptime(br_string, "%H:%M:%S")
+                b2=datetime.datetime.strptime(bk_string, "%H:%M:%S")
+
+                difference= b2 - b1
+                wh = difference.total_seconds()/60/60
+                print(difference,"break difference")
+            except Exception as e:
+                print(e)
+
+
+            # print(d,"???????")
+
+            # b1.append(d)
+
+            # b1=datetime.datetime.strptime(br_string, "%H:%M:%S")
+            # b2=datetime.datetime.strptime(bk_string, "%H:%M:%S")
+            # print(b2,"<<<")
+            # print(b1,">>>")
+
+        # break_time1 =  datetime.datetime.strptime(str(bk_new[0]), "%H:%M:%S") - datetime.datetime.strptime(str(br_new[0]), "%H:%M:%S")
+        # break_time2 =  datetime.datetime.strptime(str(bk_new[1]), "%H:%M:%S") - datetime.datetime.strptime(str(br_new[1]), "%H:%M:%S")
+        # # d={}
+        # # for i in range(len(br_new)):
+        # #
+        # #     d[str(br_new[i])] =  str(bk_new[i])
+        #
+        # # k2=br_new[0].strftime("%H:%M:%S")
+        # # K1=bk_new[0].strftime("%H:%M:%S")
+        # # t1 = datetime.datetime.strptime(str(login_time), "%H:%M:%S")
+        # # for br in br_new:
+        # #     total_working_hr=0
+        # #     k2 = br.strftime("%H:%M:%S")
+        #
+        #
+        #
+        #             # logout_break_time = j.Time
+        #         # if j.Log == "back to work":
+        #         #     logout_back_to_work = j.Time
+        # # print("backwork", bw)
+        # print("login_time",login_time)
+        # print("logout_time", logout_time)
+        # # print("logout_break_time", logout_break_time)
+        # # print("logout_back_to_work", logout_back_to_work)
+
         if login_time and logout_time:
             t1 = datetime.datetime.strptime(str(login_time), "%H:%M:%S")
             t2 = datetime.datetime.strptime(str(logout_time), "%H:%M:%S")
-
             delta = t2 - t1
-            print(delta,"/////////")
-        if logout_break_time and logout_back_to_work:
-            print((">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>"))
-            b1= datetime.datetime.strptime(str(logout_break_time), "%H:%M:%S")
-            b2= datetime.datetime.strptime(str(logout_back_to_work), "%H:%M:%S")
+            total_working_hours = delta-difference
+            print("total_working_hours   ",total_working_hours,difference)
+            print("delta",delta)
 
-            show = b2 - b1
-            print(show, "/////////")
+        # if break_time1 and break_time2:
+        #
+        #     b1= datetime.datetime.strptime(str(break_time1), "%H:%M:%S")
+        #     b2= datetime.datetime.strptime(str(break_time2), "%H:%M:%S")
+        #
+        #     time_zero =datetime.datetime.strptime('00:00:00', '%H:%M:%S')
+        #     breaktime=(b1 - time_zero + b2).time()
+        #     print(breaktime,"<<<???")
+        #     print((b1 - time_zero + b2).time(),"breaktime")
+        # #
+        #     total_working_hours= delta- breaktime
+        break_durations= []
+        # print(d,">>>>>>>>>>>>s")
+        # for i in d:
+        #
+        #     break_durations.append( datetime.datetime.strptime(str(i), "%H:%M:%S") -  datetime.datetime.strptime(str(d[i]), "%H:%M:%S"))
+        #     Sum=sum(break_durations)
+        # print(Sum,"[]][][[][][]][][][][]")
 
-            total_working_hours= delta-show
-            print(total_working_hours,"444444444444444444444444444444444444444444")
+
         Emp_work_hours[names] = total_working_hours
-
-
-
-
-        # break
 
     print("Emp_work_hours",Emp_work_hours)
     return render(request, 'log/index.html', {'data': Emp_work_hours.items()})
