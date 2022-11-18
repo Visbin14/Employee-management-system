@@ -1,23 +1,16 @@
-from django.shortcuts import render
-
+from django.contrib.auth import authenticate, login, logout
 from Employee_Management_System import settings
 from scrape import break_login_logout
 from Ems.models import *
 from Ems.Log import logged
 from skpy import *
-
-from django.contrib.auth.forms import AuthenticationForm
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
 from django.views import generic, View
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.decorators import login_required
-import numpy as np
-from datetime import datetime
+from django.utils.decorators import method_decorator
 
 sk = Skype(settings.SKYPE_EMAIL, settings.SKYPE_PASS)
-
 
 def home(request):
     log_time = break_login_logout()
@@ -27,14 +20,11 @@ def home(request):
             if i.content.lower() == logged.get('Break'):
                 a = str(i)
                 b = a.split("UserId")[1].strip()[1:].strip().split("ChatId:")[0].strip()
-
                 date = a.split("Time")[1].split()[1:2]
                 time = str(a.split("Time")[1].split()[2:3])
                 time = time[2:10]
                 contact = sk.contacts[b]
                 name = contact.name
-
-
                 obj = Employee.objects.get(name=name)
                 log,status = Log_status.objects.get_or_create(Emp=obj, Log="break", Time=time)
                 if status:
@@ -42,7 +32,6 @@ def home(request):
                     logged_time.Log.add(log)
 
             if i.content.lower().replace(" ", "") == logged.get('Login'):
-
                 a = str(i)
                 b = a.split("UserId")[1].strip()[1:].strip().split("ChatId:")[0].strip()
                 date = a.split("Time")[1].split()[1:2]
@@ -51,15 +40,11 @@ def home(request):
                 contact = sk.contacts[b]
                 name = contact.name
                 obj1 = Employee.objects.get(name=name)
-
                 log,status = Log_status.objects.get_or_create(Emp=obj1, Log="login", Time=time)
-
                 if status:
                     logged_time = Logged_Time.objects.create(Employee=obj1, Date=date[0])
                     logged_time.Log.add(log)
-
             if i.content.lower().replace(" ", "") == logged.get('Back_to_work'):
-
                 a = str(i)
                 b = a.split("UserId")[1].strip()[1:].strip().split("ChatId:")[0].strip()
                 date = a.split("Time")[1].split()[1:2]
@@ -68,27 +53,20 @@ def home(request):
                 contact = sk.contacts[b]
                 name = contact.name
                 obj2 = Employee.objects.get(name=name)
-
                 log,status = Log_status.objects.get_or_create(Emp=obj2, Log="back to work", Time=time)
-                # log.save()
                 if status:
                     logged_time = Logged_Time.objects.create(Employee=obj2, Date=date[0])
                     logged_time.Log.add(log)
-
             if logged.get('Logout') in i.content.lower():
-
                 a = str(i)
                 b = a.split("UserId")[1].strip()[1:].strip().split("ChatId:")[0].strip()
                 date = a.split("Time")[1].split()[1:2]
-
                 time = str(a.split("Time")[1].split()[2:3])
                 time = time[2:10]
                 contact = sk.contacts[b]
                 name = contact.name
                 obj3 = Employee.objects.get(name=name)
-
                 log,status = Log_status.objects.get_or_create(Emp=obj3, Log="logout", Time=time)
-                # log.save()
                 if status:
                     logged_time = Logged_Time.objects.create(Employee=obj3, Date=date[0])
                     logged_time.Log.add(log)
@@ -109,8 +87,9 @@ class Login(View):
             user = User.objects.get(username=username)
             status = user.check_password(password)
             if status:
+                login(request, user)
 
-                return redirect('/index/')
+                return redirect('/')
             else:
 
                 return render(request, 'log/login.html', {'message': "Password  incorrect"})
@@ -118,144 +97,85 @@ class Login(View):
             message = "Please check username"
             return render(request, 'log/login.html', {'message': message})
 
-
+@login_required(login_url='/login/')
 def index(request):
 
     Emp_work_hours={}
-
-    emp_obj= Employee.objects.all()
+    emp_obj = Employee.objects.all()
     li= []
     b1=[]
+    b2=[]
     for i in emp_obj:
         li.append(i.name)
-    for names in li:
-        print(names)
-        b= names
+        b2.append(i.id)
+    for emp in emp_obj:
+        print(emp.name)
         import datetime
-        x = datetime.datetime(2022, 11, 9)
-        login_obj=Logged_Time.objects.filter(Employee__name=b,Date=x)
+        x = datetime.datetime(2022, 11, 16)
+        login_obj=Logged_Time.objects.filter(Employee=emp,Date=x)
         login_time= None
         logout_time= None
         logout_break_time = None
         logout_back_to_work = None
         br = []
         bk = []
-
+        total_break = 0
 
 
         for i in login_obj:
 
 
             for j in i.Log.all():
-                print(j,"<<<<<<<<<<<<<<<<<<",j.Time,i.Date)
 
                 if j.Log == "login":
                     login_time = j.Time
+
                 if j.Log == "logout":
                     logout_time = j.Time
 
                 if j.Log == "break":
-                    # br.append(j.Log)
                     br.append(j.Time)
 
                 if j.Log=="back to work":
-                    # bk.append(j.Log)
                     bk.append(j.Time)
-
 
         br_new = sorted(br)
         bk_new = sorted(bk)
-        print("br",br)
-        print("bk", bk)
-        print(br_new,">>>>>>>>>>>>>>")
-        print(bk_new,">>>>>>>>>>>?????")
 
         for br in br_new:
-            print(">>>>>>>>>",br)
-            total_break=0
             br_string = br .strftime("%H:%M:%S")
-            print(br_string,"cccccc")
-            bt_index=br_new.index(br)
+            bt_index = br_new.index(br)
             try:
                 bk_string=bk_new[bt_index].strftime("%H:%M:%S")
-                print("br_string",br_string,"bk_string",bk_string)
                 b1 = datetime.datetime.strptime(br_string, "%H:%M:%S")
-                b2=datetime.datetime.strptime(bk_string, "%H:%M:%S")
-
-                difference= b2 - b1
+                b2 = datetime.datetime.strptime(bk_string, "%H:%M:%S")
+                print(b2,"b2 test")
+                difference = b2 - b1
                 wh = difference.total_seconds()/60/60
-                print(difference,"break difference")
+                total_break = total_break + wh
+
+                print("total_break %s" %total_break)
             except Exception as e:
                 print(e)
 
-
-            # print(d,"???????")
-
-            # b1.append(d)
-
-            # b1=datetime.datetime.strptime(br_string, "%H:%M:%S")
-            # b2=datetime.datetime.strptime(bk_string, "%H:%M:%S")
-            # print(b2,"<<<")
-            # print(b1,">>>")
-
-        # break_time1 =  datetime.datetime.strptime(str(bk_new[0]), "%H:%M:%S") - datetime.datetime.strptime(str(br_new[0]), "%H:%M:%S")
-        # break_time2 =  datetime.datetime.strptime(str(bk_new[1]), "%H:%M:%S") - datetime.datetime.strptime(str(br_new[1]), "%H:%M:%S")
-        # # d={}
-        # # for i in range(len(br_new)):
-        # #
-        # #     d[str(br_new[i])] =  str(bk_new[i])
-        #
-        # # k2=br_new[0].strftime("%H:%M:%S")
-        # # K1=bk_new[0].strftime("%H:%M:%S")
-        # # t1 = datetime.datetime.strptime(str(login_time), "%H:%M:%S")
-        # # for br in br_new:
-        # #     total_working_hr=0
-        # #     k2 = br.strftime("%H:%M:%S")
-        #
-        #
-        #
-        #             # logout_break_time = j.Time
-        #         # if j.Log == "back to work":
-        #         #     logout_back_to_work = j.Time
-        # # print("backwork", bw)
-        # print("login_time",login_time)
-        # print("logout_time", logout_time)
-        # # print("logout_break_time", logout_break_time)
-        # # print("logout_back_to_work", logout_back_to_work)
-
         if login_time and logout_time:
+            total_working_hours=''
             t1 = datetime.datetime.strptime(str(login_time), "%H:%M:%S")
             t2 = datetime.datetime.strptime(str(logout_time), "%H:%M:%S")
             delta = t2 - t1
-            total_working_hours = delta-difference
-            print("total_working_hours   ",total_working_hours,difference)
-            print("delta",delta)
+            timet = total_break
+            result = datetime.timedelta(hours=timet)
+            total_working_hours = str(delta-result)
+            print(total_working_hours,"total_working_hours")
+            hours, minutes,seconds = total_working_hours.split(":")
+            c='{} hours, {} minutes'.format(hours,minutes)
+            total_working_hours = c
 
-        # if break_time1 and break_time2:
-        #
-        #     b1= datetime.datetime.strptime(str(break_time1), "%H:%M:%S")
-        #     b2= datetime.datetime.strptime(str(break_time2), "%H:%M:%S")
-        #
-        #     time_zero =datetime.datetime.strptime('00:00:00', '%H:%M:%S')
-        #     breaktime=(b1 - time_zero + b2).time()
-        #     print(breaktime,"<<<???")
-        #     print((b1 - time_zero + b2).time(),"breaktime")
-        # #
-        #     total_working_hours= delta- breaktime
-        break_durations= []
-        # print(d,">>>>>>>>>>>>s")
-        # for i in d:
-        #
-        #     break_durations.append( datetime.datetime.strptime(str(i), "%H:%M:%S") -  datetime.datetime.strptime(str(d[i]), "%H:%M:%S"))
-        #     Sum=sum(break_durations)
-        # print(Sum,"[]][][[][][]][][][][]")
+            Emp_work_hours[emp.name] = [total_working_hours, emp.id]
 
-
-        Emp_work_hours[names] = total_working_hours
-
-    print("Emp_work_hours",Emp_work_hours)
     return render(request, 'log/index.html', {'data': Emp_work_hours.items()})
 
+@login_required(login_url='/')
 def employee(request):
     a = Employee.objects.all()
     return render(request, 'log/index2.html', {'a': a})
@@ -266,7 +186,7 @@ def delete(request, id):
     b.delete()
     return redirect('/employee/')
 
-
+@method_decorator(login_required, name='dispatch')
 class add(View):
     def get(self, request):
         return render(request, 'log/add2.html')
@@ -278,3 +198,82 @@ class add(View):
         employee = Employee.objects.create(employee_id=id, name=name, email=email)
         employee.save()
         return redirect('/employee/')
+
+def logout_view(request):
+    print(request.user,'>>>>>>>')
+    if request.user:
+        print(request.user,'<<<<<<<<')
+        logout(request)
+        return redirect('/login/')
+# @method_decorator(login_required, name='dispatch')
+class APPUpdateView(View):
+    def get(self,request,id):
+        a = Employee.objects.get(id=id)
+        print(a,"name")
+
+        import datetime
+        y= datetime.datetime(2022, 11, 16)
+        log_object= Logged_Time.objects.filter(Employee=a, Date=y)
+        print(log_object,".................")
+        log_time = None
+        out_time = None
+        log_break_time = None
+        out_back_to_work = None
+        mr = []
+        mk = []
+        mr_new = []
+        mk_new = []
+        break_times = {}
+
+
+        for n in log_object:
+            for p in n.Log.all():
+                if p.Log == "login":
+                    log_time = p.Time
+                    print(log_time,"achu login time")
+                if p.Log == "logout":
+                    out_time=p.Time
+                if p.Log == "break":
+                    mr.append(p.Time)
+
+                if p.Log == "back to work":
+                    mk.append(p.Time)
+        mr_new = sorted(mr)
+        mk_new = sorted(mk)
+        print(mk_new,"mk_new")
+        count = 1
+        for mr in mr_new:
+            full_break = 0
+            mr_string = mr .strftime("%H:%M:%S")
+            mt_index = mr_new.index(mr)
+            try:
+                mk_string=mk_new[mt_index].strftime("%H:%M:%S")
+                z1 = datetime.datetime.strptime(mr_string, "%H:%M:%S")
+                z2 = datetime.datetime.strptime(mk_string, "%H:%M:%S")
+                z3=z1.strftime('%H:%M')
+                z4=z2.strftime('%H:%M')
+                print(z2, "z2 test")
+                print(z3, "z3 test")
+                break_times[f"break{count}"] = z3
+                break_times[f"back_to_work{count}"] = z4
+                count += 1
+                break_times.append(z3)
+                break_times.append(z4)
+                difference = z2 - z1
+                mr_string = mr.strftime("%H:%M:%S")
+                m3_index = mr_new.index[1]
+                m4_string = mk_new[m3_index].strftime("%H:%M:%S")
+                print(m3_index,"m3_index")
+                print(m4_string, "m4_string")
+
+            except:
+                pass
+
+
+
+
+
+
+
+        return render(request, 'log/edit.html',{'a':a,'log_time':log_time,'out_time':out_time,'x':break_times})
+
