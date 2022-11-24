@@ -64,6 +64,10 @@
       <th scope="col" style="color:#21272e">ID</th>
       <th scope="col">NAME</th>
       <th scope="col">EMAIL-ID</th>
+      <th scope="col">Designation</th>
+      <th scope="col">Project</th>
+      <th scope="col">Salary</th>
+      <th scope="col"> </th>
     </tr>
   </div>
   </thead>
@@ -74,6 +78,9 @@
       <th scope="row">{{ i.employee_id }}</th>
       <td>{{ i.name}}</td>
       <td>{{ i.email }}</td>
+      <td>{{ i.designation }}</td>
+      <td>{{ i.project }}</td>
+      <td>{{ i.salary }}</td>
         <td> <a name="delete-id" href="{% url 'delete' i.id %}" class="delete" title="Delete" data-toggle="tooltip" ><i class="material-icons">&#xE872;</i></a></td>
     </tr>
   {% endfor %}

@@ -62,10 +62,18 @@
 
 <div>{{Emp_work_hours}}</div>
 <div class="button"style="background: #e6eaef;">
+    <form method="get">
+        <input type="date" name="date" id="date">
+        <button>submit</button>
+<!--        <input type="button" class="add-row" value="submit">-->
+    </form>
+
+
 <table>
   <tr>
     <th>Name</th>
     <th>Total Working hr/day</th>
+      <th>Update</th>
 
   </tr>
     {% for k,v in data %}
@@ -88,5 +96,11 @@
     <p class="text-dark" style="text-align: center;"></p>
   <!-- Copyright -->
 </footer>
+<!--    <script>-->
+<!--        $(document).ready(function(){-->
+<!--          $(".add-row").click(function(){-->
+<!--              date = $("#date").val();-->
+<!--          </script>-->
+
      </body>
 </html>

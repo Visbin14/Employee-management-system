@@ -146,6 +146,7 @@ SKYPE_PASS = env("SK_PASS")
 LOGIN_URL = '/login/'
 
 
+
 CELERY_BROKER_URL = "redis://127.0.0.1:6379"
 CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379"
 CELERY_ACCEPT_CONTENT = ['application/json']
