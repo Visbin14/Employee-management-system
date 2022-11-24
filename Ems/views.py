@@ -265,7 +265,7 @@ class APPUpdateView(View):
     def post(self,request,id):
         # date1111=request.GET.get('date')
         b = Employee.objects.get(pk=id)
-        print()
+        print("bbbbbbb",b.id)
         time_obj = Logged_Time.objects.filter(Employee=b)
         logged_time = None
         logout_timee = None
@@ -280,6 +280,7 @@ class APPUpdateView(View):
             for q in s.Log.all():
                 if q.Log == "login":
                    q.Time = request.POST['login']
+                   print(q.Time,"tymmmmmmmmmmmmmmmmmmmmmmmmm")
                 if q.Log == "logout":
                     q.Time = request.POST['logout']
 

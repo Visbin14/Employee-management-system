@@ -1,4 +1,4 @@
-{% load static %}
+{% comment %} {% load static %}
 <html>
    <head>
       <title>Employee details</title>
@@ -92,4 +92,94 @@
       </div>
       </form>
     </body>
-</html>
+</html> {% endcomment %}
+{% load static %}
+<html>
+  <head>
+    <title>update</title>
+    <link  rel="stylesheet" href="{% static 'style.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+  </head>
+ 
+  <body>
+    <nav style="background-color:  #abc8eb;
+    height: 63px;">
+  <a class="navbar-brand" href="#" style="font-family: system-ui;">EMS</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarText">
+    <span class="navbar-text" style="position: absolute;left: 1259px;">
+      <a style="text-decoration: none;" href=""></a>
+    </span>
+  </div>
+
+<div class="container-fluid">
+  <div class="row" style="min-height: 700px;">
+    <div class="col-sm-1" style="background-color: #c5d6eb;">
+        <br>
+        <div id="myDIV">
+            <a class="btn active" style="color: black;text-decoration: dashed;font-family: auto;padding: 7px;" href="{% url 'index' %}" >Dashboard</a><br>
+        <hr><a class="btn " style="color: black;text-decoration: dashed;font-family: auto;padding-top: inherit;" href="{% url 'employee' %}">Employee</a>
+
+<hr>
+        </div>
+ </div>
+       </div>
+    </div>
+      <div class="col-sm-11">
+
+         <div class="p-5 bottom-radious bg-light shadow-lg" style="min-height:600px;">
+
+              <p class="lead"></p>
+              <hr class="my-2">
+            </nav>
+      <form method="post">
+         {% csrf_token %}
+         <div class="container">
+            <br>
+            <center>
+               <h1>LOGGED DETAILS</h1>
+            </center>
+            <hr>
+    <h1>Dynamic Fields Javascript</h1>
+  <div class="wrapper"   style="margin-left: 34px;">
+    <div id="survey_options">
+      <input type="text" name="survey_options[]" class="survey_options" size="50" value="{{a}}" placeholder="Name">
+      <input type="text" name="survey_options[]" class="survey_options" size="50" value="{{log_time}}" placeholder="Email">
+      <input type="text" name="survey_options[]" class="survey_options" size="50" value="{{x.break1}}" placeholder="Another Field">
+      <input type="text" name="survey_options[]" class="survey_options" size="50" value="{{x.back_to_work1}}" placeholder="Another Field">
+      <input type="text" name="survey_options[]" class="survey_options" size="50" value="{{x.break2}}" placeholder="Name">
+      <input type="text" name="survey_options[]" class="survey_options" size="50" value="{{x.back_to_work2}}" placeholder="Name">
+      <input type="text" name="survey_options[]" class="survey_options" size="50" value="{{out_time}}" placeholder="Email">
+    </div>
+    <div class="controls">
+      <a href="#" id="add_more_fields"><i class="fa fa-plus"></i>Add More</a>
+      <a href="#" id="remove_fields"><i class="fa fa-plus"></i>Remove Field</a>
+    </div>
+  </div>
+  <script>
+    var survey_options = document.getElementById('survey_options');
+var add_more_fields = document.getElementById('add_more_fields');
+var remove_fields = document.getElementById('remove_fields');
+
+add_more_fields.onclick = function(){
+  var newField = document.createElement('input');
+  newField.setAttribute('type','text');
+  newField.setAttribute('name','survey_options[]');
+  newField.setAttribute('class','survey_options');
+  newField.setAttribute('siz',50);
+  newField.setAttribute('placeholder','Another Field');
+  survey_options.appendChild(newField);
+}
+
+remove_fields.onclick = function(){
+  var input_tags = survey_options.getElementsByTagName('input');
+  if(input_tags.length > 2) {
+    survey_options.removeChild(input_tags[(input_tags.length) - 1]);
+  }
+}
+  </script>
+  </body>
+  </html>
