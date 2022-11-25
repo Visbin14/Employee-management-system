@@ -21,6 +21,7 @@
 
     </script>
 </head>
+
 <body>
 <nav style="background-color:  #abc8eb;
     height: 63px;">
@@ -63,9 +64,9 @@
 <div>{{Emp_work_hours}}</div>
 <div class="button"style="background: #e6eaef;">
     <form method="get">
-        <input type="date" name="date" id="date">
-        <button>submit</button>
-<!--        <input type="button" class="add-row" value="submit">-->
+        <input type="date" name="date" id="date" value="{{date1111}}">
+        <button class="add-row">submit</button>
+        
     </form>
 
 
@@ -96,11 +97,15 @@
     <p class="text-dark" style="text-align: center;"></p>
   <!-- Copyright -->
 </footer>
-<!--    <script>-->
-<!--        $(document).ready(function(){-->
-<!--          $(".add-row").click(function(){-->
-<!--              date = $("#date").val();-->
-<!--          </script>-->
+    
+      <script>
+        $(".add-row").click(function(){
+          //date = $("#date").val();
+          console.log("clicked....")
+      })
+      
 
+
+          </script>
      </body>
 </html>

@@ -11,7 +11,6 @@ django.setup()
 
 
 def break_login_logout():
-    print(">>>>>>>>>>>>>>>>>>")
     sk = Skype(settings.SKYPE_EMAIL, settings.SKYPE_PASS)
     ch = sk.chats["19:1fe0d47033cd4ee692cbd378f28f50f5@thread.skype"]
     get_msg = ch.getMsgs()
@@ -23,6 +22,12 @@ def break_login_logout():
         # new_list.append(ch.getMsgs()) 
         for j in ch.getMsgs():
             new_list.append(j)
+    # print("new_list",new_list   )
+    # file1 = open('myfile1.txt', 'w')
+    # s = "Hello\n"
+    # file1.writelines(str(new_list))
+    # file1.close()
+    # return new_list
     return new_list 
     # return new_list
     # h = ch.getMsgs()
