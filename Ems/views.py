@@ -14,80 +14,72 @@ from django.views.generic.edit import UpdateView
 from .models import Employee,Log_status
    
 
-sk = Skype(settings.SKYPE_EMAIL, settings.SKYPE_PASS)
+
 
 def home(request):
+    
     log_time = break_login_logout()
+
     def log():
-        for i in log_time:  
-            if request.POST.get('Break') and request.POST.get('Login') and request.POST.get('Back_to_work') and request.POST.get('logout'):
-                if i.content.lower() == logged.get('Break'):
-                    a = str(i)
-                    b= a.split("UserId")[1].strip()[1:].strip().split("ChatId:")[0].strip()
-                    date = a.split("Time")[1].split()[1:2]
-                    time= str(a.split("Time")[1].split()[2:3])
-                    time=time [2:10]
-                    contact = sk.contacts[b]
-                    name = contact.name
-                    obj = Employee.objects.get(name = name)
-                    log = Log_status.objects.create(Emp = obj, Log = "break", Time=time)
-                    log.save()
+        sk = Skype(settings.SKYPE_EMAIL, settings.SKYPE_PASS)
+        for i in log_time:
+            if i.content.lower() == logged.get('Break'):
+                a = str(i)
+                b = a.split("UserId")[1].strip()[1:].strip().split("ChatId:")[0].strip()
+                date = a.split("Time")[1].split()[1:2]
+                time = str(a.split("Time")[1].split()[2:3])
+                time = time[2:10]
+                contact = sk.contacts[b]
+                name = contact.name
+                obj = Employee.objects.get(name=name)
+                log,status = Log_status.objects.get_or_create(Emp=obj, Log="break", Time=time)
+                if status:
                     logged_time = Logged_Time.objects.create(Employee=obj, Date=date[0])
-                    logged_time.Log.add(log)  
-                
-                
-                if i.content.lower().replace(" ","") == logged.get('Login'):
-                    a = str(i)
-                    b= a.split("UserId")[1].strip()[1:].strip().split("ChatId:")[0].strip()
-                    date = a.split("Time")[1].split()[1:2]
-                    time= str(a.split("Time")[1].split()[2:3])
-                    time=time [2:10]
-                    contact = sk.contacts[b]
-                    name = contact.name
-                    obj1 = Employee.objects.get(name = name)
-                    
-                    
-                    log = Log_status.objects.create(Emp = obj1, Log = "login", Time=time)
-                    log.save()
-                        
+                    logged_time.Log.add(log)
+
+            if i.content.lower().replace(" ", "") == logged.get('Login'):
+                a = str(i)
+                b = a.split("UserId")[1].strip()[1:].strip().split("ChatId:")[0].strip()
+                date = a.split("Time")[1].split()[1:2]
+                time = str(a.split("Time")[1].split()[2:3])
+                time = time[2:10]
+                contact = sk.contacts[b]
+                name = contact.name
+                obj1 = Employee.objects.get(name=name)
+                log,status = Log_status.objects.get_or_create(Emp=obj1, Log="login", Time=time)
+                if status:
                     logged_time = Logged_Time.objects.create(Employee=obj1, Date=date[0])
                     logged_time.Log.add(log)
-                    
-            
-                if i.content.lower().replace(" ","") == logged.get('Back_to_work'):
-                    a = str(i)
-                    b= a.split("UserId")[1].strip()[1:].strip().split("ChatId:")[0].strip()
-                    date = a.split("Time")[1].split()[1:2]
-                    time= str(a.split("Time")[1].split()[2:3])
-                    time=time [2:10]
-                    contact = sk.contacts[b]
-                    name = contact.name
-                    obj2 = Employee.objects.get(name = name)
-                    
-                    
-                    log = Log_status.objects.create(Emp = obj2, Log = "back to work", Time=time)
-                    log.save()
-                        
+            if i.content.lower().replace(" ", "") == logged.get('Back_to_work'):
+                a = str(i)
+                b = a.split("UserId")[1].strip()[1:].strip().split("ChatId:")[0].strip()
+                date = a.split("Time")[1].split()[1:2]
+                time = str(a.split("Time")[1].split()[2:3])
+                time = time[2:10]
+                contact = sk.contacts[b]
+                name = contact.name
+                obj2 = Employee.objects.get(name=name)
+                log,status = Log_status.objects.get_or_create(Emp=obj2, Log="back to work", Time=time)
+                if status:
                     logged_time = Logged_Time.objects.create(Employee=obj2, Date=date[0])
                     logged_time.Log.add(log)
-                        
-            
-                if logged.get('Logout') in i.content.lower():
-                    a = str(i)
-                    b= a.split("UserId")[1].strip()[1:].strip().split("ChatId:")[0].strip()
-                    date = a.split("Time")[1].split()[1:2]
-                    time= str(a.split("Time")[1].split()[2:3])
-                    time=time [2:10]
-                    contact = sk.contacts[b]
-                    name = contact.name
-                    obj3 = Employee.objects.get(name = name)
-                    
-                    log = Log_status.objects.create(Emp = obj3, Log = "logout", Time=time)
-                    log.save()
+            if logged.get('Logout') in i.content.lower():
+                a = str(i)
+                b = a.split("UserId")[1].strip()[1:].strip().split("ChatId:")[0].strip()
+                date = a.split("Time")[1].split()[1:2]
+                time = str(a.split("Time")[1].split()[2:3])
+                time = time[2:10]
+                contact = sk.contacts[b]
+                name = contact.name
+                obj3 = Employee.objects.get(name=name)
+                log,status = Log_status.objects.get_or_create(Emp=obj3, Log="logout", Time=time)
+                if status:
                     logged_time = Logged_Time.objects.create(Employee=obj3, Date=date[0])
                     logged_time.Log.add(log)
-    log()     
-    return render(request,"home.html")
+
+    log()
+
+    return render(request, "home.html")
 
 
 class Login(View):
@@ -120,6 +112,7 @@ def index(request):
     b1=[]
     b2=[]
     for emp in emp_obj:
+        print(emp.name,"<<<<<<<<<<<<<<<name>>>>>>>>>>>>>>>.")
         # x = datetime.datetime(2022, 11, 16)
         login_obj=Logged_Time.objects.filter(Employee=emp,Date=date1111)
         login_time= None
@@ -133,16 +126,16 @@ def index(request):
             for j in i.Log.all():
                 if j.Log == "login":
                     login_time = j.Time
-
+                    print(login_time,"login_time")
                 if j.Log == "logout":
                     logout_time = j.Time
-
+                    print(logout_time,"logout_time")
                 if j.Log == "break":
                     br.append(j.Time)
-
+                    print(br,"br")
                 if j.Log=="back to work":
                     bk.append(j.Time)
-
+                    print(bk,"bk")
         br_new = sorted(br)
         bk_new = sorted(bk)
         for br in br_new:
