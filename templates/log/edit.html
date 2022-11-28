@@ -31,7 +31,7 @@
       margin-top: -52px;
       }
    </style>
-   <body>
+    <body>
    <nav style="background-color:  #abc8eb;
     height: 63px;">
   <a class="navbar-brand" href="#" style="font-family: system-ui;">EMS</a>
@@ -64,34 +64,6 @@
               <p class="lead"></p>
               <hr class="my-2">
 
-      <form method="post">
-         {% csrf_token %}
-         <div class="container">
-            <br>
-            <center>
-               <h1>LOGGED DETAILS</h1>
-            </center>
-            <hr>
-            <label>Name</label>
-            <input type="text" name="name"  value="{{a}}" placeholder=""  size="15" required />
-            <label>Login</label>
-            <input type="text" name="login" value="{{log_time}}" placeholder="" size="15" required />
-            <label>break1</label>
-            <input type="text" name="break1" value="{{x.break1}}" placeholder="" size="15"required />
-            <label>Back to work</label>
-            <input type="text" name="Back_to_work" value="{{x.back_to_work1}}"  placeholder="" size="15"required />
-            <label>break2</label>
-            <input type="text" name="break2" value="{{x.break2}}" placeholder="" size="15"required />
-            <label>Back to work</label>
-            <input type="text" name="Back__to__work" value="{{x.back_to_work2}}" placeholder="" size="15"required />
-            <label>Logout</label>
-            <input type="text" name="logout" value="{{out_time}}" placeholder="" size="15" required />
-            <button type="submit">submit</button>
-         </div>
-          </div>
-      </div>
-      </form>
-    </body>
 </html> {% endcomment %}
 {% load static %}
 <html>
@@ -136,14 +108,15 @@
               <p class="lead"></p>
               <hr class="my-2">
             </nav>
-      <form method="post" style="margin-left: 102px;>
+      <form method="post" >
          {% csrf_token %}
-         <div class="container" style="background-color: #c9d1e7;">
+        <div class="container" style="background-color: #c9d1e7;">
             <br>
             <center>
                <h1>LOGGED DETAILS</h1>
             </center>
             <hr>
+
             
         {% load tz %}
         {% get_current_timezone as tz %}
@@ -151,8 +124,7 @@
             {{ message.log_date | time:'H:i:s' }}
         {% endtimezone %} 
           
-          
-  <div class="wrapper"   style="margin-left: 34px;">
+            <div class="wrapper"   style="margin-left: 34px;">
     <div id="survey_options">
       <input type="text" name="survey_options[]" class="survey_options" size="50" value="{{a}}" placeholder="Name">
       <input type="text" name="survey_options[]" class="survey_options" size="50" value="{{log_time}}" placeholder="Email">

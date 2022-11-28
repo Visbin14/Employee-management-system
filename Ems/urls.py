@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path
 from Ems import views
 # from . import views
-from .views import APPUpdateView
+# from .views import APPUpdateView
 
 urlpatterns = [
     path("index/",views.home,name = "home"),
@@ -13,7 +13,7 @@ urlpatterns = [
     path('delete/<int:id>', views.delete, name='delete'),
     path('logout/',views.logout_view,name='logout'),
     # path('edit/', views.Edit.as_view(), name='edit'),
-    path('update/<int:id>/', APPUpdateView.as_view(), name='update'),
+    path('update/<int:id>/<date>', views.editdetails, name='update'),
     # path('update1/<int:id>/', views.ModelForm.as_view(), name='update1'),
 
 ]

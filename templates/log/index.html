@@ -64,7 +64,7 @@
 <div>{{Emp_work_hours}}</div>
 <div class="button"style="background: #e6eaef;">
     <form method="get">
-        <input type="date" name="date" id="date" value="{{date1111}}">
+        <input type="date" name="date" id="date" value="{{ calender_date }}">
         <button class="add-row">submit</button>
         
     </form>
@@ -82,7 +82,8 @@
   <tr>
     <td>{{ k }}</td>
     <td>{{ v.0 }}</td>
-      <td> <a href="{% url 'update' v.1 %}"><class="update" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a></td>
+    
+    <td> <a href="{% url 'update' v.1 calender_date  %}"><class="update" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a></td>
   </tr>
     {% endfor %}
 

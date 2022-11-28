@@ -12,7 +12,7 @@ from django.utils.decorators import method_decorator
 import datetime
 from django.views.generic.edit import UpdateView
 from .models import Employee,Log_status
-   
+from django.http import HttpResponse  
 
 
 
@@ -93,11 +93,12 @@ def index(request):
     li= []
     b1=[]
     b2=[]
-    date1111=request.GET.get('date')
+    calender_date=request.GET.get('date')
+    print(calender_date,"calender_date")
     for emp in emp_obj:
         
         # x = datetime.datetime(2022, 11, 16)
-        login_obj=Logged_Time.objects.filter(Employee=emp,Date=date1111)
+        login_obj=Logged_Time.objects.filter(Employee=emp,Date=calender_date)
         login_time= None
         logout_time= None
         logout_break_time = None
@@ -148,7 +149,7 @@ def index(request):
                 print("not found")
             
             
-    return render(request, 'log/index.html', {'data': Emp_work_hours.items(),'date1111': date1111})
+    return render(request, 'log/index.html', {'data': Emp_work_hours.items(),'calender_date':calender_date})
 
 # @login_required(login_url='/')
 def employee(request):
@@ -185,10 +186,54 @@ def logout_view(request):
 
         
 # @method_decorator(login_required, name='dispatch')
-class APPUpdateView(View):
-    def get(self,request,id):
+def editdetails(request,id,date):
+    if request.method =="POST":
+        breaks=[]
+        back_to_works=[]
+        employee = Employee.objects.get(pk=id)
+        logged_times = Logged_Time.objects.filter(Employee=employee,Date=date)
+        print(logged_times,"time_obj")
+        print(type(logged_times))
+        for logged_time in logged_times:
+            for log_status in logged_time.Log.all():
+            
+                if log_status.Log == "login":
+                   log_status.Time=request.POST.get('login')
+                   print( log_status.Time,"login")
+                #    log_status.Time.save()
+                if log_status.Log == "logout":
+                   log_status.Time=request.POST.get('logout')
+                   print( log_status.Time,"logout")
+                #    log_status.save()
+                if log_status.Log == "break":
+                   print( log_status.Time,"break")
+                #    breaks.append(request.POST.get('break'))
+
+                #    log_status.Time=request.POST.get('break')
+                #    log_status.save()
+                if log_status.Log == "back to work":
+                   print(log_status.Time," back to work")
+                #    back_to_works.append(request.POST.get('backtowork'))
+                #    log_status.Time=request.POST.get('backtowork')
+                #    log_status.save()
+            # for log_status in logged_time.Log.all():
+            #     if log_status.Log == "break":
+            #        breaks.append(request.POST.get('break'))
+
+            #     #    log_status.Time=request.POST.get('break')
+            #     #    log_status.save()
+            #     if log_status.Log == "back to work":
+            #        back_to_works.append(request.POST.get('backtowork'))
+                #    log_status.Time=request.POST.get('backtowork')
+                #    log_status.save()
+        return HttpResponse("Hello, world. You're at the polls index.")   
+               
+        
+     
+        
+    else:
         a = Employee.objects.get(id=id)
-        log_object= Logged_Time.objects.filter(Employee=a)
+        log_object= Logged_Time.objects.filter(Employee=a,Date=date)
         log_time = None
         out_time = None
         log_break_time = None
@@ -238,7 +283,7 @@ class APPUpdateView(View):
                 pass
         return render(request, 'log/edit.html', {'a': a, 'log_time': log_time, 'out_time': out_time, 'x': break_times})
     def post(self,request,id):
-        # date1111=request.GET.get('date')
+        # =request.GET.get('date')
         b = Employee.objects.get(pk=id)
         time_obj = Logged_Time.objects.filter(Employee=b)
         logged_time = None
@@ -251,6 +296,7 @@ class APPUpdateView(View):
             for q in s.Log.all():
                 if q.Log == "login":
                    q.Time = request.POST['login']
+
                 if q.Log == "logout":
                     q.Time = request.POST['logout']
                 if q.Log == "break":
@@ -262,5 +308,5 @@ class APPUpdateView(View):
                 c += 1
                 q.Time.save()
         #
-        return redirect('/employee/')
+        # return redirect('/employee/')
 
